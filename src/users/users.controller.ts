@@ -12,6 +12,8 @@ import { UpdateUserDto } from '../dtos/users/update-user.dto';
 import { UserDto } from 'src/dtos/users/users.dto';
 import { Serialize } from 'src/core/interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
+import { get } from 'http';
+import { CurrentUser } from 'src/core/decorators/current-user.decorator';
 
 @Serialize(UserDto)
 @Controller('auth')
@@ -45,5 +47,10 @@ export class UsersController {
   @Patch('/:id')
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     //return await this.userService.updateUser(parseInt(id), body);
+  }
+
+  @Get('/whoamI')
+  async getCurrentUser(@CurrentUser() user: UserDto) {
+    return user;
   }
 }
